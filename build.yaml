@@ -1,0 +1,66 @@
+course_info:
+  name: ml-scale
+  version: 1.0.0
+  type: self-paced
+
+bdc_min_version: "1.24"
+master_parse_min_version: "1.18"
+top_dbc_folder_name: $course_id
+src_base: .
+keep_lab_dirs: true
+
+notebook_defaults:
+  dest: $target_lang/$notebook_type/$basename.$target_extension
+  master:
+    enabled: true
+    scala: false
+    python: true
+    answers: true
+    instructor: false
+    enable_templates: false
+    heading:
+      enabled: true
+    footer:
+      enabled: true
+
+misc_files:
+  - src: CHANGELOG.md
+    dest: ""
+
+notebook_type_name:
+  answers: solutions
+  instructor: ''
+  exercises: ''
+
+notebooks:
+  - src: 00_getting_started.py
+  - src: 01_explore_full_dataset.py
+  - src: 02_linear_customer_classification_model.py
+  - src: includes/configuration.py
+    dest: $target_lang/$notebook_type/includes/$basename.$target_extension
+    master:
+      heading:
+        enabled: false
+      footer:
+        enabled: false
+  - src: includes/main/python/experiment.py
+    dest: $target_lang/$notebook_type/includes/main/python/$basename.$target_extension
+    master:
+      heading:
+        enabled: false
+      footer:
+        enabled: false
+  - src: includes/main/python/preprocessing.py
+    dest: $target_lang/$notebook_type/includes/main/python/$basename.$target_extension
+    master:
+      heading:
+        enabled: false
+      footer:
+        enabled: false
+  - src: includes/utilities.py
+    dest: $target_lang/$notebook_type/includes/$basename.$target_extension
+    master:
+      heading:
+        enabled: false
+      footer:
+        enabled: false

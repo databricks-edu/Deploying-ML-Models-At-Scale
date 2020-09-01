@@ -1,0 +1,49 @@
+name: Deploying an ML Project with MLflow
+
+conda_env: conda.yaml
+
+entry_points:
+  load_user_data:
+    parameters:
+      file_name: {type: str, default: user_profile_data.snappy.parquet}
+      kind: {type: str, default: user}
+      username: username
+    command: >
+      python includes/main/python/load_data.py
+      --file-name {file_name}
+      --kind {type}
+      --username {username}
+  load_event_data:
+    parameters:
+      file_name: {type: str, default: health_profile_data.snappy.parquet}
+      kind: {type: str, default: event}
+      username: username
+    command: >
+      python includes/main/python/load_data.py
+      --file-name {file_name}
+      --kind {type}
+      --username {username}
+  etl:
+    parameters:
+      username: username
+    command: >
+      python includes/main/python/etl.py
+      --username {username}
+  experiment:
+    parameters:
+      penalty: penalty
+      max_iter: {type: int, default: 10000}
+      username: username
+    command: >
+      python includes/main/python/experiment.py
+      --penalty {penalty}
+      --max-iter {max_iter}
+      --username {username}
+  main:
+    parameters:
+      username: username
+      penalty: penalty
+    command: >
+      python main.py
+      --penalty {penalty}
+      --username {username}
