@@ -3,18 +3,18 @@ from urllib.request import urlretrieve
 import click
 import os
 
-def configure_spark(username: str, local: bool) -> SparkSession:
-    if local:
-        import os
-        print("Configuring Spark for local processing.")
-        pyspark_submit_args  = '--packages "io.delta:delta-core_2.12:0.7.0" '
-        pyspark_submit_args += 'pyspark-shell'
-        os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_submit_args
-
-    spark = SparkSession.builder.master("local[8]").getOrCreate()
-    spark.sql(f"CREATE DATABASE IF NOT EXISTS dbacademy_{username}")
-    spark.sql(f"USE dbacademy_{username}")
-    return spark
+# def configure_spark(username: str, local: bool) -> SparkSession:
+#     if local:
+#         import os
+#         print("Configuring Spark for local processing.")
+#         pyspark_submit_args  = '--packages "io.delta:delta-core_2.12:0.7.0" '
+#         pyspark_submit_args += 'pyspark-shell'
+#         os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_submit_args
+#
+#     spark = SparkSession.builder.master("local[8]").getOrCreate()
+#     spark.sql(f"CREATE DATABASE IF NOT EXISTS dbacademy_{username}")
+#     spark.sql(f"USE dbacademy_{username}")
+#     return spark
 
 def retrieve_data(file: str, landing_path: str, local: bool) -> bool:
     """Download file from remote location to driver. Move from driver to DBFS."""
@@ -44,7 +44,7 @@ def load_delta_table(spark: SparkSession, file_name: str,
 @click.option("--local", help="True|False")
 def load_data(file_name: str, kind: str, username: str, local: bool) -> bool:
 
-    spark = configure_spark(username, local)
+    # spark = configure_spark(username, local)
 
     projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
     if local:
