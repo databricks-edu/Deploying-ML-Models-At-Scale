@@ -19,14 +19,14 @@ from mlflow.tracking.fluent import _get_experiment_id
 def workflow(username: str, penalty: str, local: bool, use_conda: bool) -> bool:
 
     load_user_data_params = {
-        "file_name": "user_profile_data.snappy.parquet",
+        "filename": "user_profile_data.snappy.parquet",
         "kind" : "user",
         "username": username,
         "local": local
     }
 
     load_event_data_params = {
-        "file_name": "health_profile_data.snappy.parquet",
+        "filename": "health_profile_data.snappy.parquet",
         "kind" : "event",
         "username": username,
         "local": local

@@ -5,12 +5,12 @@ conda_env: data/conda.yaml
 entry_points:
   load_data:
     parameters:
-      file_name: file_name
+      filename: filename
       kind: kind
       username: username
     command: >
       python includes/main/python/load_data.py
-      --file-name {file_name}
+      --filename {filename}
       --kind {kind}
       --username {username}
   etl:
