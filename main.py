@@ -48,26 +48,22 @@ def workflow(username: str, penalty: str, local: bool, use_conda: bool) -> bool:
         load_user_data_run = mlflow.projects.run(
             GIT_REPO, "load_data",
             parameters=load_user_data_params,
-            use_conda=use_conda,
-            backend="local"
+            use_conda=use_conda
         )
         load_event_data_run = mlflow.projects.run(
             GIT_REPO, "load_data",
             parameters=load_event_data_params,
-            use_conda=use_conda,
-            backend="local"
+            use_conda=use_conda
         )
         etl_run = mlflow.projects.run(
             GIT_REPO, "etl",
             parameters=etl_params,
-            use_conda=use_conda,
-            backend="local"
+            use_conda=use_conda
         )
         experiment_run = mlflow.projects.run(
             GIT_REPO, "experiment",
             parameters=experiment_params,
-            use_conda=use_conda,
-            backend="local"
+            use_conda=use_conda
         )
 
 if __name__ == "__main__":
