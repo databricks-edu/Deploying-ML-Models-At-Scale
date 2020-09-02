@@ -3,13 +3,20 @@ import click
 import mlflow
 import numpy as np
 import pandas as pd
-from types import Dict, Tuple
+from typing import Dict, Tuple
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import GridSearchCV, train_test_split
 
-def configure_spark(username: str) -> SparkSession:
-    spark = SparkSession.builder.getOrCreate()
+def configure_spark(username: str, local: bool) -> SparkSession:
+    if local:
+        import os
+        print("Configuring Spark for local processing.")
+        pyspark_submit_args  = '--packages "io.delta:delta-core_2.12:0.7.0" '
+        pyspark_submit_args += 'pyspark-shell'
+        os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_submit_args
+
+    spark = SparkSession.builder.master("local[8]").getOrCreate()
     spark.sql(f"CREATE DATABASE IF NOT EXISTS dbacademy_{username}")
     spark.sql(f"USE dbacademy_{username}")
     return spark
@@ -34,10 +41,11 @@ def get_param_grid(penalty: str) -> Dict:
     }
     return param_grids[penalty]
 
-def preprocessing(df: pd.DataFrame) ->
-    Tuple(np.ndarray, np.ndarray, np.ndarray, np.ndarray):
-    features = ht_augmented_pandas_df.drop("lifestyle", axis=1)
-    target = ht_augmented_pandas_df["lifestyle"]
+def preprocessing(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    ss = StandardScaler()
+    le = LabelEncoder()
+    features = df.drop("lifestyle", axis=1)
+    target = df["lifestyle"]
     target = le.fit_transform(target)
 
     X_train, X_test, y_train, y_test = train_test_split(features, target)
@@ -56,12 +64,19 @@ def preprocessing(df: pd.DataFrame) ->
 @click.option("--penalty", help="l1|l2|elasticnet")
 @click.option("--username", help="username unique to dbacademy on this workspace")
 @click.option("--max-iter", help="maximum iterations for logistic regression fit")
-def experiment(username: str, penalty: str, max_iter: int):
-    spark = configure_spark(username)
-    ss = StandardScaler()
-    le = LabelEncoder()
+@click.option("--local", help="True|False")
+def experiment(username: str, penalty: str, max_iter: int, local: bool):
+    spark = configure_spark(username, local)
 
-    ht_augmented_df = spark.read.table("ht_augmented")
+    projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
+    if local:
+        projectPath = "data/"
+    silverDailyPath = projectPath + "daily/"
+    dimUserPath     = projectPath + "users/"
+    goldPath = projectPath + "gold/"
+    ht_augmented_path = goldPath + "ht_augmented"
+
+    ht_augmented_df = spark.read.format("delta").load(ht_augmented_path)
     ht_augmented_pandas_df = ht_augmented_df.toPandas()
 
     (
@@ -73,7 +88,7 @@ def experiment(username: str, penalty: str, max_iter: int):
 
     param_grid = get_param_grid(penalty)
 
-    gs = GridSearchCV(LogisticRegression(max_iter=max_iter), param_grid)
+    gs = GridSearchCV(LogisticRegression(max_iter=int(max_iter)), param_grid)
     gs.fit(X_train, y_train)
 
     train_acc = gs.score(X_train, y_train)

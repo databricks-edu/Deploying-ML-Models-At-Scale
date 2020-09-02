@@ -1,0 +1,9 @@
+{
+  "spark_version" : "7.2.x-cpu-ml-scala2.12",
+  "num_workers" : 2,
+  "spark_conf": {
+    "spark": "local[8]"
+  },
+  "node_type_id": "i3.xlarge",
+  "driver_node_type_id": "i3.xlarge"
+}

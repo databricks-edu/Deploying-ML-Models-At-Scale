@@ -1,0 +1,16 @@
+version: "3"
+services:
+  this_mlflow_run:
+    build: docker
+    command: start-notebook.sh --NotebookApp.token="dblocal"
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/home/jovyan
+  this_mlflow_server:
+    build: docker
+    command: mlflow server --host 0.0.0.0 --default-artifact-root /home/jovyan/data/artifact
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/home/jovyan
