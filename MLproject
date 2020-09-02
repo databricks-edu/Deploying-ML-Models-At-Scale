@@ -8,13 +8,11 @@ entry_points:
       file_name: file_name
       kind: kind
       username: username
-      local: local
     command: >
       python includes/main/python/load_data.py
       --file-name {file_name}
       --kind {kind}
       --username {username}
-      --local {local}
   etl:
     parameters:
       username: username
