@@ -45,10 +45,30 @@ def workflow(username: str, penalty: str, local: bool, use_conda: bool) -> bool:
     }
 
     with mlflow.start_run() as active_run:
-        load_user_data_run = mlflow.projects.run("https://github.com/databricks-edu/Deploying-ML-Models-At-Scale", "load_data", load_user_data_params, use_conda, backend="local")
-        load_event_data_run = mlflow.projects.run("https://github.com/databricks-edu/Deploying-ML-Models-At-Scale", "load_data", load_event_data_params, use_conda, backend="local")
-        etl_run = mlflow.projects.run("https://github.com/databricks-edu/Deploying-ML-Models-At-Scale", "etl", etl_params, use_conda, backend="local")
-        experiment_run = mlflow.projects.run("https://github.com/databricks-edu/Deploying-ML-Models-At-Scale", "experiment", experiment_params, use_conda, backend="local")
+        load_user_data_run = mlflow.projects.run(
+            GIT_REPO, "load_data",
+            parameters=load_user_data_params,
+            use_conda=use_conda,
+            backend="local"
+        )
+        load_event_data_run = mlflow.projects.run(
+            GIT_REPO, "load_data",
+            parameters=load_event_data_params,
+            use_conda=use_conda,
+            backend="local"
+        )
+        etl_run = mlflow.projects.run(
+            GIT_REPO, "etl",
+            parameters=etl_params,
+            use_conda=use_conda,
+            backend="local"
+        )
+        experiment_run = mlflow.projects.run(
+            GIT_REPO, "experiment",
+            parameters=experiment_params,
+            use_conda=use_conda,
+            backend="local"
+        )
 
 if __name__ == "__main__":
     workflow()
