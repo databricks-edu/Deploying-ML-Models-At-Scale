@@ -2,10 +2,10 @@ from pyspark.sql import SparkSession
 from urllib.request import urlretrieve
 import click
 import os
-import mlflow.utils
 
 from pyspark.dbutils import DBUtils
 
+spark = SparkSession.builder.master("local[8]").getOrCreate()
 dbutils = DBUtils(spark.sparkContext)
 
 def retrieve_data(file: str, landing_path: str) -> bool:
