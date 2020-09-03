@@ -30,7 +30,7 @@ def load_delta_table(spark: SparkSession, file_name: str,
 @click.option("--filename", help="the name of the remote file")
 @click.option("--kind", help="event|user")
 @click.option("--username", help="username unique to dbacademy on this workspace")
-def load_data(file_name: str, kind: str, username: str) -> bool:
+def load_data(filename: str, kind: str, username: str) -> bool:
 
     projectPath     = f"dbfs:/dbacademy/{username}/mlmodels/profile/"
     landing_path    = projectPath + "landing/"
