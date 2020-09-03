@@ -46,7 +46,7 @@ def load_data(filename: str, kind: str, username: str) -> bool:
     else:
         raise ArgumentError("`path` variable must be one of `event` or `user`.")
 
-    retrieve_data(file_name, landing_path)
+    retrieve_data(filename, landing_path)
     load_delta_table(spark, file_name, landing_path, table_path)
 
 if __name__ == '__main__':
