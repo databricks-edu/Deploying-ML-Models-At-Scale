@@ -3,3 +3,4 @@ data/gold
 data/landing
 data/users
 mlruns
+.DS_Store
