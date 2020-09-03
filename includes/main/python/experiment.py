@@ -53,7 +53,7 @@ def preprocessing(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
 @click.option("--penalty", help="l1|l2|elasticnet")
 @click.option("--username", help="username unique to dbacademy on this workspace")
 @click.option("--max-iter", help="maximum iterations for logistic regression fit")
-def experiment(username: str, penalty: str, max_iter: int, local: bool):
+def experiment(username: str, penalty: str, max_iter: int):
 
     projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
     goldPath = projectPath + "gold/"

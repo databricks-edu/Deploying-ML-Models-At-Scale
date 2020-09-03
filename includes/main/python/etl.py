@@ -6,7 +6,7 @@ spark = SparkSession.builder.master("local[8]").getOrCreate()
 
 @click.command(help="transform loaded data to prepare for machine learning")
 @click.option("--username", help="username unique to dbacademy on this workspace")
-def etl(username: str, local: bool):
+def etl(username: str):
 
     projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
     silverDailyPath = projectPath + "daily/"

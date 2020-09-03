@@ -8,14 +8,14 @@ from pyspark.dbutils import DBUtils
 spark = SparkSession.builder.master("local[8]").getOrCreate()
 dbutils = DBUtils(spark.sparkContext)
 
-def retrieve_data(file: str, landing_path: str) -> bool:
+def retrieve_data(filename: str, landing_path: str) -> bool:
     """Download file from remote location to driver. Move from driver to DBFS."""
 
     base_url = "https://files.training.databricks.com/static/data/health-tracker/"
-    url = base_url + file
-    driverPath = "file:/databricks/driver/" + file
-    dbfsPath = landing_path + file
-    urlretrieve(url, file)
+    url = base_url + filename
+    driverPath = "file:/databricks/driver/" + filename
+    dbfsPath = landing_path + filename
+    urlretrieve(url, filename)
     dbutils.fs.mv(driverPath, dbfsPath)
     return True
 
