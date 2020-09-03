@@ -3,16 +3,6 @@ name: Deploying an ML Project with MLflow
 conda_env: data/conda.yaml
 
 entry_points:
-  load_data:
-    parameters:
-      filename: filename
-      kind: kind
-      username: username
-    command: >
-      python includes/main/python/load_data.py
-      --filename {filename}
-      --kind {kind}
-      --username {username}
   etl:
     parameters:
       username: username

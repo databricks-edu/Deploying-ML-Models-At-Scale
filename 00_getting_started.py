@@ -13,6 +13,14 @@
 
 # COMMAND ----------
 
+# MAGIC %md ## Clear workspace
+
+# COMMAND ----------
+
+dbutils.fs.rm(projectPath, recurse=True)
+
+# COMMAND ----------
+
 # MAGIC %md ## Retrieve and Load the Data
 # MAGIC
 # MAGIC We will be working with two files:

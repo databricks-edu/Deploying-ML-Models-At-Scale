@@ -34,6 +34,7 @@ notebook_type_name:
 
 notebooks:
   - src: 00_getting_started.py
+  - src: 01_local_development.py
   - src: includes/configuration.py
     dest: $target_lang/$notebook_type/includes/$basename.$target_extension
     master:
