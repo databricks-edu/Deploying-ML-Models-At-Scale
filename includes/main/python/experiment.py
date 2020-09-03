@@ -8,18 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import GridSearchCV, train_test_split
 
-def configure_spark(username: str, local: bool) -> SparkSession:
-    if local:
-        import os
-        print("Configuring Spark for local processing.")
-        pyspark_submit_args  = '--packages "io.delta:delta-core_2.12:0.7.0" '
-        pyspark_submit_args += 'pyspark-shell'
-        os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_submit_args
-
-    spark = SparkSession.builder.master("local[8]").getOrCreate()
-    spark.sql(f"CREATE DATABASE IF NOT EXISTS dbacademy_{username}")
-    spark.sql(f"USE dbacademy_{username}")
-    return spark
+spark = SparkSession.builder.master("local[8]").getOrCreate()
 
 def get_param_grid(penalty: str) -> Dict:
     param_grids = {
@@ -64,15 +53,9 @@ def preprocessing(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
 @click.option("--penalty", help="l1|l2|elasticnet")
 @click.option("--username", help="username unique to dbacademy on this workspace")
 @click.option("--max-iter", help="maximum iterations for logistic regression fit")
-@click.option("--local", help="True|False")
 def experiment(username: str, penalty: str, max_iter: int, local: bool):
-    spark = configure_spark(username, local)
 
     projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
-    if local:
-        projectPath = "data/"
-    silverDailyPath = projectPath + "daily/"
-    dimUserPath     = projectPath + "users/"
     goldPath = projectPath + "gold/"
     ht_augmented_path = goldPath + "ht_augmented"
 
