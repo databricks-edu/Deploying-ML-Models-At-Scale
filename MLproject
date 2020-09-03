@@ -16,32 +16,16 @@ entry_points:
   etl:
     parameters:
       username: username
-      local: {type: bool, default: True}
     command: >
       python includes/main/python/etl.py
       --username {username}
-      --local {local}
   experiment:
     parameters:
       penalty: penalty
       max_iter: {type: int, default: 10000}
       username: username
-      local: local
     command: >
       python includes/main/python/experiment.py
       --penalty {penalty}
       --max-iter {max_iter}
       --username {username}
-      --local {local}
-  main:
-    parameters:
-      username: username
-      penalty: penalty
-      local: {type: bool, default: True}
-      use_conda: use_conda
-    command: >
-      python main.py
-      --penalty {penalty}
-      --username {username}
-      --local {local}
-      --use-conda {use_conda}
