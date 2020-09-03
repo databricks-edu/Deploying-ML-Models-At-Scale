@@ -4,7 +4,7 @@ import click
 import os
 import mlflow.utils
 
-dbutils = mlflow.utils._get_dbutils()
+dbutils = mlflow.utils.databricks_utils._get_dbutils()
 
 def retrieve_data(file: str, landing_path: str) -> bool:
     """Download file from remote location to driver. Move from driver to DBFS."""
