@@ -2,6 +2,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import mean, col
 import click
 
+from pyspark.dbutils import DBUtils
+
 spark = SparkSession.builder.master("local[8]").getOrCreate()
 dbutils = DBUtils(spark.sparkContext)
 
