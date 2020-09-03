@@ -5,6 +5,5 @@
     "spark": "local[8]"
   },
   "node_type_id": "i3.xlarge",
-  "driver_node_type_id": "i3.xlarge",
-  "instance_pool_id" : "0903-023950-comb19-pool-NnM5dsz5"
+  "driver_node_type_id": "i3.xlarge"
 }

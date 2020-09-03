@@ -3,6 +3,7 @@ from pyspark.sql.functions import mean, col
 import click
 
 spark = SparkSession.builder.master("local[8]").getOrCreate()
+dbutils = DBUtils(spark.sparkContext)
 
 @click.command(help="transform loaded data to prepare for machine learning")
 @click.option("--username", help="username unique to dbacademy on this workspace")
@@ -44,6 +45,7 @@ def etl(username: str):
     )
 
     ht_augmented_path = goldPath + "ht_augmented"
+    dbutils.fs.rm(ht_augmented_path, recurse=True)
     (
       health_tracker_augmented_df.write
       .mode("overwrite")

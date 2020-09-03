@@ -14,8 +14,10 @@ entry_points:
       penalty: penalty
       max_iter: {type: int, default: 10000}
       username: username
+      experiment_name: experiment_name
     command: >
       python includes/main/python/experiment.py
       --penalty {penalty}
       --max-iter {max_iter}
       --username {username}
+      --experiment-name {experiment_name}

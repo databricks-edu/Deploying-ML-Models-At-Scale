@@ -101,3 +101,74 @@ sys.version
 # MAGIC ```
 # MAGIC less ~/.databrickscfg
 # MAGIC ```
+# MAGIC
+# MAGIC Press `q` to exit.
+
+# COMMAND ----------
+
+# MAGIC %md ### Identify Cluster to Use with Databricks Connect
+# MAGIC
+# MAGIC I used this command to identify the cluster to use with Databricks Connect:
+# MAGIC
+# MAGIC ```
+# MAGIC databricks clusters list | grep joshua
+# MAGIC ```
+
+# COMMAND ----------
+
+# MAGIC %md ### Configure Databricks Connect
+# MAGIC
+# MAGIC Use the command
+# MAGIC
+# MAGIC ```
+# MAGIC databricks-connect configure
+# MAGIC ```
+# MAGIC
+# MAGIC You should be able to use the default options.
+# MAGIC
+# MAGIC #### Test Databricks Connect
+# MAGIC
+# MAGIC This may fail if you don't have JDK 8 installed. You can install the
+# MAGIC open JDK 8 by visiting this link: https://adoptopenjdk.net/
+# MAGIC
+
+# COMMAND ----------
+
+# MAGIC %md ### Test the ETL Spark Job
+# MAGIC
+# MAGIC Use this command to test the ETL spark job:
+# MAGIC
+# MAGIC ```
+# MAGIC spark-submit includes/main/python/etl.py --username FILL_IN_YOUR_USERNAME
+# MAGIC ```
+
+# COMMAND ----------
+
+# MAGIC %md ### Configure MLflow
+# MAGIC
+# MAGIC Run the following to configure MLflow to use Databricks.
+# MAGIC
+# MAGIC 1. `export MLFLOW_TRACKING_URI=databricks`
+# MAGIC     - this tells MLflow to use Databricks to manage experiments
+# MAGIC 1. `mlflow create -n /Users/YOUR_DATABRICKS_USER/building-deploying`
+# MAGIC     - this will create a new experiment in the Databricks Workspace
+# MAGIC     - make note of the resulting experiment id
+# MAGIC 1. `export EXPERIMENT_NAME=/Users/YOUR_DATABRICKS_USER/building-deploying`
+
+# COMMAND ----------
+
+# MAGIC %md ### Install Scikit-Learn in Conda Environment
+# MAGIC
+# MAGIC ```
+# MAGIC pip install sklearn
+# MAGIC ```
+
+# COMMAND ----------
+
+# MAGIC %md ### Test the Experiment Spark Job
+# MAGIC
+# MAGIC Use this command to test the ETL spark job:
+# MAGIC
+# MAGIC ```
+# MAGIC spark-submit includes/main/python/experiment.py --penalty l1 --max-iter 10000 --username joshuacook --experiment-name $EXPERIMENT_NAME
+# MAGIC ```

@@ -53,7 +53,8 @@ def preprocessing(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
 @click.option("--penalty", help="l1|l2|elasticnet")
 @click.option("--username", help="username unique to dbacademy on this workspace")
 @click.option("--max-iter", help="maximum iterations for logistic regression fit")
-def experiment(username: str, penalty: str, max_iter: int):
+@click.option("--experiment-name", help="name associated with an mlflow experiment")
+def experiment(username: str, penalty: str, max_iter: int, experiment_name: int):
 
     projectPath     = f"/dbacademy/{username}/mlmodels/profile/"
     goldPath = projectPath + "gold/"
@@ -71,18 +72,21 @@ def experiment(username: str, penalty: str, max_iter: int):
 
     param_grid = get_param_grid(penalty)
 
-    gs = GridSearchCV(LogisticRegression(max_iter=int(max_iter)), param_grid)
-    gs.fit(X_train, y_train)
+    mlflow.set_tracking_uri("databricks")
+    mlflow.set_experiment(experiment_name=experiment_name)
+    with mlflow.start_run():
+      gs = GridSearchCV(LogisticRegression(max_iter=int(max_iter)), param_grid)
+      gs.fit(X_train, y_train)
 
-    train_acc = gs.score(X_train, y_train)
-    test_acc = gs.score(X_test, y_test)
+      train_acc = gs.score(X_train, y_train)
+      test_acc = gs.score(X_test, y_test)
 
-    mlflow.sklearn.log_model(gs.best_estimator_, "model")
+      mlflow.sklearn.log_model(gs.best_estimator_, "model")
 
-    for param, value in gs.best_params_.items():
-        mlflow.log_param(param, value)
-    mlflow.log_metric("train acc", train_acc)
-    mlflow.log_metric("test acc", test_acc)
+      for param, value in gs.best_params_.items():
+          mlflow.log_param(param, value)
+      mlflow.log_metric("train acc", train_acc)
+      mlflow.log_metric("test acc", test_acc)
 
 if __name__ == '__main__':
     experiment()
